@@ -38,6 +38,81 @@ namespace TradingCardGame
                 _extent = value;
             }
         }
+        //composition
+        private HashSet<ArtDetail> CardArtDetails = new HashSet<Card.ArtDetail>();
+        private class ArtDetail
+        {
+            private string _name { get; set; }
+            private string _imgUrl { get; set; }
+
+            public string Name
+            {
+                get
+                { return _name; }
+                set
+                {
+                    if (string.IsNullOrWhiteSpace(value))
+                        throw new ArgumentNullException("Name of detail cant be empty");
+
+                    _name = value;
+
+                }
+            }
+
+            public string ImgUrl
+            {
+                get
+                { return _imgUrl; }
+                set
+                {
+                    if (string.IsNullOrWhiteSpace(value))
+                        throw new ArgumentNullException("Name of detail cant be empty");
+
+                    _imgUrl = value;
+
+                }
+            }
+            public ArtDetail(string name, string imgUrl)
+            {
+                this.Name = name;
+                this.ImgUrl = imgUrl;
+            }
+        }
+
+        public void AddArtDetail(string name, string imgUrl)
+        {
+            CardArtDetails.Add(new ArtDetail(name, imgUrl));
+        }
+
+        public void RemoveArtDetail(string name)
+        {
+            if (name != null)
+            {
+                foreach (var ArtDetail in CardArtDetails)
+                {
+                    if (ArtDetail.Name.Equals(name))
+                    {
+                        CardArtDetails.Remove(ArtDetail);
+                    }
+                }
+            }
+            else
+            {
+                throw new ArgumentNullException("Name should not be null");
+            }
+        }
+
+        public List<String> GetCardArtDetails()
+        {
+            List<String> tmp = new List<String>();
+            foreach(var ArtDetail in CardArtDetails)
+            {
+                tmp.Add(String.Format("Detail Name: {0}, ImageUrl: {1}", ArtDetail.Name, ArtDetail.ImgUrl));
+            }
+            return tmp;
+        }
+
+        //end of composition
         private CardRarity CardRarity { get; set; }
         private string _cardName { get; set; }
         public string CardName {
@@ -214,24 +289,6 @@ namespace TradingCardGame
 
 
 
-        static void Main(string[] args)
-        {
-            //Card xd = new Card(CardRarity.COMMON, "Stronk", 10, 10, 10, "Mocna karta", "Podpalenie", 2);
-            //Card xp = new Card(CardRarity.RARE, "Stornker", 20, 20, 20, "Mocniejsza karta", "Stun", 2);
-            //Card xz = new Card(CardRarity.EPIC, "Stronkiests", 30, 30, 30, "Najmocniejsza karta jk", "Taunt", 2);
-            //Card xc = new Card(CardRarity.COMMON, "Cos", 10, 10, 10, "Jakis opis", "Silence", 2);
-            //Card xa = new Card(CardRarity.COMMON, "Tutaj", 10, 10, 10, "watever", "Deathrattle", 2);
-            //Card xw = new Card(CardRarity.COMMON, "Nie Gra", 10, 10, 10, "xdxp", "Random", 2);
-            //Save(Extent);
-            Load();
-            
-            ShowAllCards();
-            Thread.Sleep(500000);
-            
-           
-            
- 
-
-        }
+        
     }
 }
