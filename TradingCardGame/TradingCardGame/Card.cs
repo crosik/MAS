@@ -10,8 +10,17 @@ using System.Xml.Serialization;
 
 namespace TradingCardGame
 {
+    public enum CardRace
+    {
+        Dragon, Totem, Beast, Demon, Elemental, Mech, Pirate
+    }
+    public enum CardRarity
+    {
+        COMMON, RARE, EPIC, LEGENDARY
+    }
     public class Card
     {
+        
         private static List<Card> _extent = new List<Card>();
         public static List<Card> Extent
         {
@@ -29,9 +38,9 @@ namespace TradingCardGame
                 _extent = value;
             }
         }
-        private CardRarity cardRarity { get; set; }
+        private CardRarity CardRarity { get; set; }
         private string _cardName { get; set; }
-        public string cardName {
+        public string CardName {
             get
             { return _cardName; }
             set
@@ -44,11 +53,11 @@ namespace TradingCardGame
             }
         }
 
-        public int cardHP { get; set; }
-        public int cardDMG { get; set; }
-        public int cardCost { get; set; }
+        public int CardHP { get; set; }
+        public int CardDMG { get; set; }
+        public int CardCost { get; set; }
         private string _cardEffect { get; set; }
-        public string cardEffect
+        public string CardEffect
         {
             get
             { return _cardEffect; }
@@ -62,7 +71,7 @@ namespace TradingCardGame
         }
         private string _cardDesc { get; set; }
 
-        public string cardDesc
+        public string CardDesc
         {
             get
             { return _cardDesc; }
@@ -74,47 +83,47 @@ namespace TradingCardGame
                 _cardDesc = value;
             }
         }
-        public class cardText : System.Attribute {
-            private string cardEffect { get; set; }
-            private string cardDesc { get; set; }
-            public cardText(string cardEffect, string cardDesc)
+        public class CardText : System.Attribute {
+            private string CardEffect { get; set; }
+            private string CardDesc { get; set; }
+            public CardText(string cardEffect, string cardDesc)
             {
-                this.cardDesc = cardDesc;
-                this.cardEffect = cardEffect;
+                this.CardDesc = cardDesc;
+                this.CardEffect = cardEffect;
             }
             public override string ToString()
             {
-                return String.Format("{0} , {1}", this.cardEffect, this.cardDesc);
+                return String.Format("{0} , {1}", this.CardEffect, this.CardDesc);
             }
         }
-        private cardText cardTextz { get; set; }
-        public int? cardOverload { get; set; }
-        public int dmgModifier { get; set; }
-        public int cardCurrentDMG => cardDMG + dmgModifier;
-        public int hpModifier { get; set; }
-        public int cardCurrentHP => cardHP + hpModifier;
-        public HashSet<CardRace> cardRace { get; set; } = new HashSet<CardRace>();
-        public int? cardCurrentCost => cardCost + cardOverload;
+        private CardText CardTextz { get; set; }
+        public int? CardOverload { get; set; }
+        public int DmgModifier { get; set; }
+        public int CardCurrentDMG => CardDMG + DmgModifier;
+        public int HpModifier { get; set; }
+        public int CardCurrentHP => CardHP + HpModifier;
+        public HashSet<CardRace> CardRace { get; set; } = new HashSet<CardRace>();
+        public int? CardCurrentCost => CardCost + CardOverload;
         public void AddRace(CardRace Race)
         {
-            this.cardRace.Add(Race);
+            this.CardRace.Add(Race);
         }
 
         public void DeleteRace(CardRace Race)
         {
-            this.cardRace.Remove(Race);
+            this.CardRace.Remove(Race);
         }
 
         public Card(CardRarity cardRarity, string cardName, int cardHP, int cardDMG, int cardCost, string cardDesc, string cardEffect, int? cardOverload) {
-            this.cardRarity = cardRarity;
-            this.cardName = cardName;
-            this.cardHP = cardHP;
-            this.cardDMG = cardDMG;
-            this.cardCost = cardCost;
-            this.cardOverload = cardOverload;
-            this.cardDesc = cardDesc;
-            this.cardEffect = cardEffect;
-            this.cardTextz = new cardText(cardEffect, cardDesc);
+            this.CardRarity = cardRarity;
+            this.CardName = cardName;
+            this.CardHP = cardHP;
+            this.CardDMG = cardDMG;
+            this.CardCost = cardCost;
+            this.CardOverload = cardOverload;
+            this.CardDesc = cardDesc;
+            this.CardEffect = cardEffect;
+            this.CardTextz = new CardText(cardEffect, cardDesc);
             Extent.Add(this);
         }
         private Card()
@@ -123,9 +132,9 @@ namespace TradingCardGame
         }
         public override string ToString()
         {
-            return String.Format("Card {0} is {1}, Description : {2}", this.cardName, this.cardRarity, this.cardDesc);
+            return String.Format("Card {0} is {1}, Description : {2}", this.CardName, this.CardRarity, this.CardDesc);
         }
-
+        
         public static void ShowAllCards()
         {
             foreach (var card in Extent)
@@ -152,7 +161,7 @@ namespace TradingCardGame
                 List<Card> results = new List<Card>();
                 foreach (var card in Extent)
                 {
-                    if (card.cardCurrentHP > minHP)
+                    if (card.CardCurrentHP > minHP)
                     {
                         results.Add(card);
                     }
@@ -183,7 +192,23 @@ namespace TradingCardGame
             Extent = (List<TradingCardGame.Card>)formatter.Deserialize(stream);
         }
 
-
+        //CARD -> DECK
+        private HashSet<Deck> Decks = new HashSet<Deck>();
+        public void AddToDeck(Deck deck)
+        {
+            if (deck == null)
+            {
+                throw new ArgumentNullException("deck cant be null");
+            }
+            else
+            {
+                if (!Decks.Contains(deck))
+                {
+                    Decks.Add(deck);
+                    deck.AddCard(this);
+                }
+            }
+        }
 
 
 
