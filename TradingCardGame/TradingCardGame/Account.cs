@@ -8,6 +8,31 @@ namespace TradingCardGame
 {
     public class Account
     {
+
+        public Account(int AccountID, string accLogin, string accPass)
+        {
+            this.AccountID = AccountID;
+            this.AccountLogin = accLogin;
+            this.Password = accPass;
+            Extent.Add(this);
+        }
+        private static List<Account> _extent = new List<Account>();
+        public static List<Account> Extent
+        {
+            get
+            {
+                if (_extent == null)
+                {
+                    _extent = new List<Account>(Account.Extent);
+                }
+
+                return _extent;
+            }
+            set
+            {
+                _extent = value;
+            }
+        }
         public int AccountID { get; set; }
         private string _accountLogin { get; set; }
         private GroupChat chat;
@@ -74,12 +99,28 @@ namespace TradingCardGame
             if (decks.Contains(deck))
             {
                 decks.Remove(deck);
-                deck.SetOwner(null);
+                deck.RemoveOwner();
             }
         }
 
+        private List<AccountGuild> AccountGuilds = new List<AccountGuild>();
 
+        public List<AccountGuild> GetAccountGuilds()
+        {
+            return new List<AccountGuild>(AccountGuilds);
+        }
 
+        public void AddAccount(AccountGuild accG)
+        {
+            if (accG != null)
+            {
+                if (!AccountGuilds.Contains(accG))
+                {
+                    AccountGuilds.Add(accG);
+                    accG.SetAccount(this);
+                }
+            }
+        }
 
     }
 }

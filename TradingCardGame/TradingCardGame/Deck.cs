@@ -8,6 +8,28 @@ namespace TradingCardGame
 {
     public class Deck
     {
+        public Deck(string deckName)
+        {
+            this.DeckName = deckName;
+            Extent.Add(this);
+        }
+        private static List<Deck> _extent = new List<Deck>();
+        public static List<Deck> Extent
+        {
+            get
+            {
+                if (_extent == null)
+                {
+                    _extent = new List<Deck>(Deck.Extent);
+                }
+
+                return _extent;
+            }
+            set
+            {
+                _extent = value;
+            }
+        }
         private string _deckName { get; set; }
         public string DeckName {
             get
@@ -62,7 +84,7 @@ namespace TradingCardGame
             get { return Cards; }
         }
 
-        private Account acc;
+        private Account acc ;
 
         public Account GetOwner()
         {
@@ -73,14 +95,14 @@ namespace TradingCardGame
         {
             if (this.acc != acc)
             {
-                if (this.acc != null)
-                {
-                    this.acc.RemoveDeck(this);
-                }
                 this.acc = acc;
                 this.acc.AddDeck(this);
             }
         }
 
+        internal void RemoveOwner()
+        {
+            this.acc = null;
+        }
     }
 }

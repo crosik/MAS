@@ -8,6 +8,23 @@ namespace TradingCardGame
 {
     public class GroupChat
     {
+        private static List<GroupChat> _extent = new List<GroupChat>();
+        public static List<GroupChat> Extent
+        {
+            get
+            {
+                if (_extent == null)
+                {
+                    _extent = new List<GroupChat>(GroupChat.Extent);
+                }
+
+                return _extent;
+            }
+            set
+            {
+                _extent = value;
+            }
+        }
         private string _chatName { get; set; }
         public string ChatName
         {
