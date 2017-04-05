@@ -123,8 +123,7 @@ namespace TradingCardGame
                 if (string.IsNullOrWhiteSpace(value))
                     throw new ArgumentNullException("Card name cant be empty");
 
-                _cardName = value;
-
+                _cardName = value;   
             }
         }
 
@@ -218,13 +217,13 @@ namespace TradingCardGame
             }
         }
 
-        public static List<Card> getCards()
+        public static List<Card> GetCards()
         {
             List<Card> tmp = new List<Card>(Card.Extent);
             return tmp;
         }
 
-        public static List<Card> getCards(int? minHP)
+        public static List<Card> GetCards(int? minHP)
         {
             List<Card> tmp = new List<Card>(Card.Extent);
             if (minHP == null)

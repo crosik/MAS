@@ -16,7 +16,7 @@ namespace TradingCardGame
             //Card xc = new Card(CardRarity.COMMON, "Cos", 10, 10, 10, "Jakis opis", "Silence", 2);
             //Card xa = new Card(CardRarity.COMMON, "Tutaj", 10, 10, 10, "watever", "Deathrattle", 2);
             //Card xw = new Card(CardRarity.COMMON, "Nie Gra", 10, 10, 10, "xdxp", "Random", 2);
-            //Save(Extent);
+            Card.Save(Card.Extent);
             Card.Load();
 
             Card.ShowAllCards();

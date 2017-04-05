@@ -10,7 +10,7 @@ namespace TradingCardGame
     {
         public int AccountID { get; set; }
         private string _accountLogin { get; set; }
-        private Deck deck;
+        private GroupChat chat;
         public string AccountLogin
         {
             get
@@ -37,18 +37,47 @@ namespace TradingCardGame
             }
         }
 
-        public void OwnerOfDeck(Deck deck)
+        public void AddToChat(GroupChat chat)
         {
-            if (deck == null)
+            if (chat == null)
             {
-                throw new ArgumentNullException("Null company given");
+                throw new ArgumentNullException("No chat name given");
             }
             else
             {
-                this.deck = deck;
-                deck.SetDeckOwner(this);
+                this.chat = chat;
+                chat.AddAccount(this);
             }
         }
+
+        private List<Deck> decks = new List<Deck>();
+
+        public List<Deck> GetDecks()
+        {
+            return new List<Deck>(decks);
+        }
+
+        public void AddDeck(Deck deck)
+        {
+            if (deck != null)
+            {
+                if (!decks.Contains(deck))
+                {
+                    decks.Add(deck);
+                    deck.SetOwner(this);
+                }
+            }
+        }
+
+        public void RemoveDeck(Deck deck)
+        {
+            if (decks.Contains(deck))
+            {
+                decks.Remove(deck);
+                deck.SetOwner(null);
+            }
+        }
+
 
 
 

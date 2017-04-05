@@ -49,6 +49,7 @@
     <Compile Include="Account.cs" />
     <Compile Include="Card.cs" />
     <Compile Include="Deck.cs" />
+    <Compile Include="GroupChat.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

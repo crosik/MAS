@@ -8,9 +8,7 @@ namespace TradingCardGame
 {
     public class Deck
     {
-        private Account _owner { get; set; }
         private string _deckName { get; set; }
-        private Dictionary<int,Account> AccountDecks = new Dictionary<int,Account>();
         public string DeckName {
             get
             {
@@ -23,10 +21,6 @@ namespace TradingCardGame
 
                 _deckName = value;
             }
-        }
-        public Deck(Account owner)
-        {
-            this._owner = owner;
         }
 
         private static List<Card> Cards = new List<Card>();
@@ -68,36 +62,25 @@ namespace TradingCardGame
             get { return Cards; }
         }
 
-        public void SetDeckOwner(Account acc)
+        private Account acc;
+
+        public Account GetOwner()
         {
-            if (acc == null)
+            return acc;
+        }
+
+        public void SetOwner(Account acc)
+        {
+            if (this.acc != acc)
             {
-                throw new ArgumentNullException("No owner was given");
-            }
-            else
-            {
-                if (!AccountDecks.ContainsKey(acc.AccountID))
+                if (this.acc != null)
                 {
-                    AccountDecks.Add(acc.AccountID, acc);
-                    acc.OwnerOfDeck(this);
+                    this.acc.RemoveDeck(this);
                 }
-                else
-                {
-                    throw new ArgumentNullException("Already has a deck!");
-                }
+                this.acc = acc;
+                this.acc.AddDeck(this);
             }
         }
 
-        public void RemoveOwner(Account acc)
-        {
-            if (acc == null)
-            {
-                throw new ArgumentNullException("Null account given");
-            }
-            else
-            {
-                AccountDecks.Remove(acc.AccountID);
-            }
-        }
     }
 }
